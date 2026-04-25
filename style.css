@@ -1,0 +1,500 @@
+/* ============================================================
+   Build-A-Burger — 4food memorial widget
+   Aesthetic: editorial / refined-warm / period-honest
+   ============================================================ */
+
+:root {
+  --bg: #f0f4f4;             /* matches the original static site bg */
+  --surface: #ffffff;
+  --ink: #1a1a1a;
+  --ink-muted: #5a5a5a;
+  --line: #e2e6e6;
+  --accent: #d63b1f;          /* warm tomato — distinctive 4food-era red */
+  --accent-soft: #fdecea;
+  --premium: #f4b400;         /* gold, $1 upcharge */
+  --half: #79c0d6;            /* teal, $0.50 upcharge */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  min-height: 100vh;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ----------------------------------------------------------
+   App layout
+   ---------------------------------------------------------- */
+
+.app {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 32px) 32px;
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+.app__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: "opsz" 144;
+  font-size: clamp(2.4rem, 6vw, 3.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.app__subtitle {
+  margin-top: 8px;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+/* ----------------------------------------------------------
+   Two-column builder layout
+   ---------------------------------------------------------- */
+
+.builder {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+  gap: clamp(16px, 3vw, 32px);
+  align-items: stretch;
+}
+
+@media (max-width: 720px) {
+  .builder { grid-template-columns: 1fr; }
+}
+
+/* ----------------------------------------------------------
+   Burger stack (left column)
+   ---------------------------------------------------------- */
+
+.stack {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px 24px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.stack__inner {
+  width: 100%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  min-height: 360px;
+  gap: 0;
+}
+
+/* Each layer is a clickable row containing image + label */
+.layer {
+  width: 100%;
+  background: transparent;
+  border: 2px dashed transparent;
+  border-radius: var(--radius-md);
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 180ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--ink);
+  position: relative;
+
+  /* layer overlap — pull each one slightly up */
+  margin-top: -8px;
+}
+
+.layer:first-child { margin-top: 0; }
+
+.layer:hover,
+.layer:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  outline: none;
+  z-index: 5;
+  transform: translateY(-2px);
+}
+
+.layer.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  z-index: 6;
+}
+
+.layer.is-empty {
+  padding: 14px 8px;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.layer__img {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  pointer-events: none;
+  /* very subtle drop-shadow so layers feel three-dimensional */
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+}
+
+.layer__label {
+  margin-top: 2px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  text-align: center;
+  color: var(--ink);
+}
+
+.layer__upcharge {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--premium);
+}
+
+/* Multiple condiment thumbnails row */
+.layer__condiments {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+  align-items: center;
+}
+
+.layer__condiments img {
+  height: 28px;
+  width: auto;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+}
+
+/* Price card sits below the stack */
+.price-card {
+  margin-top: 24px;
+  padding: 14px 24px;
+  background: var(--ink);
+  color: white;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--font-display);
+  box-shadow: var(--shadow-sm);
+}
+
+.price-card__label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65);
+}
+
+.price-card__value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  font-variation-settings: "opsz" 72;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------
+   Picker (right column)
+   ---------------------------------------------------------- */
+
+.picker {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+
+.picker__header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.picker__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.picker__helper {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+.picker__grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+  align-content: flex-start;
+  overflow-y: auto;
+  max-height: 420px;
+  padding-right: 4px;
+}
+
+.picker__grid::-webkit-scrollbar { width: 6px; }
+.picker__grid::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+/* Empty state */
+.picker__grid--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+/* Option card in picker */
+.option {
+  background: white;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: all 160ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--ink);
+  position: relative;
+  text-align: center;
+}
+
+.option:hover,
+.option:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.option.is-selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(214, 59, 31, 0.12);
+}
+
+.option__img {
+  width: 70px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+.option__name {
+  font-weight: 500;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.option__upcharge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--premium);
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.option--none .option__img {
+  opacity: 0.3;
+}
+
+/* Picker footer with legend */
+.picker__footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.legend {
+  list-style: none;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend__dot--premium { background: var(--premium); }
+.legend__dot--half    { background: var(--half); }
+
+/* ----------------------------------------------------------
+   Action bar
+   ---------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 160ms ease;
+  letter-spacing: 0.005em;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary:hover {
+  background: #b8331a;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink-muted);
+  border-color: var(--line);
+}
+
+.btn--ghost:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ----------------------------------------------------------
+   Memorial footer
+   ---------------------------------------------------------- */
+
+.memorial {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------
+   Toast notification
+   ---------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: var(--ink);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms ease;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.toast.is-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ----------------------------------------------------------
+   Reduced motion preference
+   ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
