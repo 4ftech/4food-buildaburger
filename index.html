@@ -3,76 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Build your custom 4food burger — a memorial to the original 4food.com Build-A-Burger experience.">
-  <meta name="theme-color" content="#f0f4f4">
+  <meta name="description" content="Build your custom 4food burger — a recreation of the original 4food.com Build-A-Burger.">
+  <meta name="theme-color" content="#ffffff">
   <title>Build-A-Burger · 4food</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <main class="app" role="main">
-    <header class="app__header">
-      <h1 class="app__title">Build-A-Burger</h1>
-      <p class="app__subtitle">Tap a layer to swap an ingredient.</p>
-    </header>
+  <main class="bb" role="main">
 
-    <div class="builder">
+    <div class="bb__layout">
 
-      <!-- LEFT: stacked burger preview -->
-      <section class="stack" aria-label="Your burger">
-        <div class="stack__inner" id="stack">
-          <!-- Layers are inserted here by JS, top to bottom: bun-top, slice, scoop, cheese, condiment, protein, bun-bottom -->
-        </div>
-
-        <div class="price-card" aria-live="polite">
-          <span class="price-card__label">Price</span>
-          <span class="price-card__value" id="price">$0.00</span>
+      <!-- LEFT: stacked burger preview (41%) -->
+      <section class="bb-stack" aria-label="Your burger">
+        <div class="bb-stack__inner" id="stack">
+          <!-- Layers injected by JS -->
         </div>
       </section>
 
-      <!-- RIGHT: ingredient picker -->
-      <aside class="picker" aria-label="Ingredient picker">
-        <header class="picker__header">
-          <h2 class="picker__title" id="picker-title">Tap a layer →</h2>
-          <p class="picker__helper" id="picker-helper">Choose any layer of your burger to begin.</p>
+      <!-- RIGHT: ingredient picker (59%) -->
+      <aside class="bb-picker" aria-label="Ingredient picker">
+        <header class="bb-picker__header">
+          <h2 class="bb-picker__title" id="picker-title">Choose a Bun</h2>
         </header>
 
-        <div class="picker__grid" id="picker-grid" role="listbox" aria-labelledby="picker-title">
+        <div class="bb-picker__list" id="picker-list" role="listbox" aria-labelledby="picker-title">
           <!-- Options injected by JS -->
         </div>
-
-        <footer class="picker__footer">
-          <ul class="legend" aria-label="Ingredient legend">
-            <li><span class="legend__dot legend__dot--premium" aria-hidden="true"></span> $1 upcharge</li>
-            <li><span class="legend__dot legend__dot--half" aria-hidden="true"></span> $0.50 upcharge</li>
-          </ul>
-        </footer>
       </aside>
 
     </div>
 
-    <!-- ACTION BAR -->
-    <div class="actions">
-      <button class="btn btn--primary" id="btn-share" type="button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        Share my burger
-      </button>
-      <button class="btn btn--ghost" id="btn-reset" type="button">Reset</button>
-    </div>
-
-    <footer class="memorial">
-      <p>A nostalgic recreation of the original 4food.com Build-A-Burger. The restaurant closed in 2014 — this widget preserves a piece of what it was.</p>
-    </footer>
-
   </main>
-
-  <!-- Toast for share confirmation -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>
